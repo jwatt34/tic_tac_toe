@@ -13,7 +13,7 @@ pos_dict = {1: ' ',
             9: ' '}
 
 
-def new_table():
+def new_table(players):
     global game_running
     game_running = True
     print(f'|{pos_dict[1]}|{pos_dict[2]}|{pos_dict[3]}|')
@@ -21,7 +21,10 @@ def new_table():
     print(f'|{pos_dict[4]}|{pos_dict[5]}|{pos_dict[6]}|')
     print('-------')
     print(f'|{pos_dict[7]}|{pos_dict[8]}|{pos_dict[9]}|')
-    run_game()
+    if players == '1':
+        single_player_game()
+    elif players == '2':
+        two_player_game()
 
 
 def print_table():
@@ -52,7 +55,7 @@ def computer_turn():
                 game_running = False
 
 
-def run_game():
+def single_player_game():
     global pos_dict, game_running
     while game_running:
         user_input = int(input('Select a position to place an X (1-9)\n'))
@@ -60,7 +63,7 @@ def run_game():
             pos_dict[user_input] = 'X'
         else:
             print('Pos unavailable please try again')
-            run_game()
+            single_player_game()
         for combo in win_list:
             if pos_dict[combo[0]] == 'X' and \
                     pos_dict[combo[0]] == pos_dict[combo[1]] and \
@@ -73,4 +76,43 @@ def run_game():
             print_table()
 
 
-new_table()
+def player_turn(player_move, symbol):
+    global game_running
+    if pos_dict[player_move] == ' ':
+        pos_dict[player_move] = symbol
+    else:
+        print('Space occupied. Try again.')
+        if symbol == 'X':
+            player_num = 1
+        else:
+            player_num = 2
+        player_move = int(input(f'Player {player_num}:\nSelect a position to place an X (1-9)\n'))
+        player_turn(player_move, symbol)
+    for combo in win_list:
+        if pos_dict[combo[0]] == 'X' and \
+                pos_dict[combo[0]] == pos_dict[combo[1]] and \
+                pos_dict[combo[0]] == pos_dict[combo[2]]:
+            print('Player 1 wins!')
+            print_table()
+            game_running = False
+        elif pos_dict[combo[0]] == 'O' and\
+                pos_dict[combo[0]] == pos_dict[combo[1]] and\
+                pos_dict[combo[0]] == pos_dict[combo[2]]:
+            print('Player 2 wins!')
+            print_table()
+            game_running = False
+
+
+def two_player_game():
+    while game_running:
+        player1_pos = int(input('Player 1:\nSelect a position to place an X (1-9)\n'))
+        player_turn(player1_pos, 'X')
+        print_table()
+        if game_running:
+            player2_pos = int(input('Player 2:\nSelect a position to place an O (1-9)\n'))
+            player_turn(player2_pos, 'O')
+            print_table()
+
+
+player_option = input('Press 1 for single player mode or 2 for 2-player mode.\n')
+new_table(player_option)
