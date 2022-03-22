@@ -114,5 +114,5 @@ def two_player_game():
             print_table()
 
 
-player_option = input('Press 1 for single player mode or 2 for 2-player mode.\n')
+player_option = input('Press 1 for single player mode or 2 for two player mode.\n')
 new_table(player_option)
