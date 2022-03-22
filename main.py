@@ -55,7 +55,6 @@ def computer_turn():
 def run_game():
     global pos_dict, game_running
     while game_running:
-
         user_input = int(input('Select a position to place an X (1-9)\n'))
         if pos_dict[user_input] == ' ':
             pos_dict[user_input] = 'X'
